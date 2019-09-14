@@ -12,7 +12,4 @@ defmodule Marketplace do
       :world
 
   """
-  def hello do
-    :world
-  end
 end
