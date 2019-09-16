@@ -5,13 +5,16 @@ defmodule Marketplace.OrderBook do
 	@name Marketplace.Server
 
 	# Public API 
-
+	def init(init_arg) do 
+		{:ok, init_arg}
+	end 
+	
 	def start_link(_) do
 		GenServer.start_link(@name, [], name: @name)
 	end
 
-	def new do
-		GenServer.call @name, :new
+	def new(name) do
+		GenServer.call @name, {:new, name} 
 	end
 
 	def list do 

@@ -1,20 +1,32 @@
-defmodule Marketplace.Supervisor do 
-	use Supervisor 
+defmodule Marketplace.Supervisor do
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
 
-	def start_link(arg) do 
-		Supervisor.start_link(__MODULE__, arg, name: __MODULE__) 
-	end
+  use Supervisor
 
-	def init(_init_arg) do
-		children = [
+  def start_link(init_arg) do
 
-			Marketplace.OrderBook
-		
-		]
+    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
 
-		opts = [strategy: :one_for_one]
-		
-		Supervisor.init(children, opts)
-	end 
+  end 
 
-end 
+  def init(_init_arg) do
+    children = [
+
+       {Marketplace.Stash, []},
+       {Marketplace.OrderSupervisor, nil},
+       {Registry, [keys: :unique, name: Marketplace.Registry]}, 
+       {Marketplace.OrderBook, nil},
+
+    ]
+
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+
+    opts = [strategy: :rest_for_one, name: Marketplace.Supervisor]
+
+    Supervisor.init(children, opts)
+  end
+
+end
