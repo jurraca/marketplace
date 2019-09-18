@@ -15,7 +15,7 @@ defmodule Marketplace.Order do
 
 	def post_match(key, val, id) when is_integer(val) do 
 		Agent.update(via_tuple(id), 
-		 	fn map -> Map.update!(map, key, &(&1 - val)) 
+		 	fn map -> Map.update(map, key, 0, &(&1 - val)) 
 		end)
 	end
 
@@ -28,9 +28,10 @@ defmodule Marketplace.Order do
 	end 
 
 	# Registry lookup 
-	
+
 	defp via_tuple(id) do 
 		{:via, Registry, {Marketplace.Registry, id}}
 	end 
+
 
 end
