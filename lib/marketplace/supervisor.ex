@@ -15,9 +15,9 @@ defmodule Marketplace.Supervisor do
     children = [
 
        {Marketplace.Stash, []},
-       {Marketplace.OrderSupervisor, nil},
-       {Registry, [keys: :unique, name: Marketplace.Registry]}, 
-       {Marketplace.OrderBook, nil},
+       {Registry, [keys: :unique, name: Marketplace.Registry]},
+       {Marketplace.OrderSupervisor, []},
+       {Marketplace.Book, []}
 
     ]
 

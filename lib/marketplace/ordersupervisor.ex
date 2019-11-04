@@ -11,8 +11,8 @@ defmodule Marketplace.OrderSupervisor do
 		DynamicSupervisor.init(strategy: :one_for_one)
 	end 
 
-	def add_order(order_name) do 
-		DynamicSupervisor.start_child(@me, {Marketplace.Order, order_name})
+	def start_child({order_name, key, val}) do 
+		DynamicSupervisor.start_child(@me, {Marketplace.Order, {order_name, key, val}})
 	end 
 
 end
