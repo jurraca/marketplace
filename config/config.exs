@@ -18,8 +18,16 @@ use Mix.Config
 #
 # You can also configure a third-party app:
 #
-#     config :logger, level: :info
-#
+
+config :logger, level: :info, backends: [{ExSyslogger, :logger_market}]
+
+config :logger, :logger_market,
+  level: :info,
+  format: "$date $time [$level] $levelpad$node $metadata $message",
+  metadata: [:module, :line, :function, :pid],
+  ident: "Marketplace",
+  facility: :local0,
+  option: :pid
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment
@@ -28,3 +36,4 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env()}.exs"
+

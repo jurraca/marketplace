@@ -1,4 +1,5 @@
 defmodule Marketplace.Supervisor do
+
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -17,7 +18,10 @@ defmodule Marketplace.Supervisor do
        {Marketplace.Stash, []},
        {Registry, [keys: :unique, name: Marketplace.Registry]},
        {Marketplace.OrderSupervisor, []},
-       {Marketplace.Book, []}
+       {Marketplace.Book, []}, 
+       {Marketplace.Server, []},
+       {Marketplace.DemandSimulator, 20},
+       {Marketplace.SupplySimulator, []}
 
     ]
 

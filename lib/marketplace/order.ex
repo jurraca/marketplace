@@ -1,38 +1,38 @@
 defmodule Marketplace.Order do
-	use Agent
+	use Agent, restart: :temporary
+	require Logger
 
-	# External 
-	def start_link({id, key, val}) do 
-		Agent.start_link(fn -> %{key => val} end, name: via_tuple(id))
+	def start_link({name, key, val}) do 
+		Agent.start_link(fn -> %{key => val} end, name: via_tuple(name))
 	end
 	
-	def post_order(key, val, id) when is_integer(val) do
-		Agent.update(via_tuple(id), 
+	def post_order(key, val, name) when is_integer(val) do
+		Agent.update(via_tuple(name), 
 			fn map -> Map.update(map, key, val, &(&1 + val)) 
 		end)
+		Logger.info("Order posted.")
 	end
 
-	def post_match(key, val, id) when is_integer(val) do 
-		fun = case current_state(id, key) - val > 0 do
-			true -> &(&1 - val)
-			false -> &(&1 * 0) # 0 if the match overshoots. ie fill all you can, but don't return non-matches
-			end
-		Agent.update(via_tuple(id), 
-		 	fn map -> Map.update(map, key, 0, fun) end )
+	def post_match(key, val, name) when is_integer(val) do 
+		Agent.update(via_tuple(name), 
+		 	fn map -> Map.update(map, key, 0, &(&1 - val)) end )
+		Logger.info("Match succeeded.")
 	end
- 
-	def current_state(id) do 
-		Agent.get(via_tuple(id), fn state -> state end )
+
+	def current_state(name) do 
+		Agent.get(via_tuple(name), fn state -> state end )
 	end 
 
-	def current_state(id, key) do 
-		Agent.get(via_tuple(id), &(Map.get(&1, key)))
+	def current_state(name, key) do 
+		Agent.get(via_tuple(name), &(Map.get(&1, key)))
 	end 
 
-	# Registry lookup 
+	def terminate(name) do 
+		:ok = Registry.unregister(Marketplace.Registry, name)
+	end 
 
-	defp via_tuple(id) do 
-		{:via, Registry, {Marketplace.Registry, id}}
+	def via_tuple(name) do 
+		{:via, Registry, {Marketplace.Registry, name}}
 	end
 
 end

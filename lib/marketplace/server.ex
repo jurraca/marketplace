@@ -1,11 +1,16 @@
 defmodule Marketplace.Server do 
 	use GenServer 
+	require Logger
 
 	alias Marketplace.{Order, OrderSupervisor}
 
 	def init(_) do
-		{:ok, Marketplace.Stash.get()}
+		{:ok, nil}
 	end
+
+	def start_link(_) do
+		GenServer.start_link(__MODULE__, [])
+	end 
 
 	def handle_call(:list, _from, _state) do 
 		list = Registry.select( Marketplace.Registry, 
@@ -36,10 +41,11 @@ defmodule Marketplace.Server do
 	end	
 
 	def handle_call({:post, key, value, id}, _from, _state) do 
-
+		
 		resp = case lk(id) do 	
-			:ok -> Order.post_order(key, value, id)	
-			{:error, msg} -> {OrderSupervisor.start_child({id, key, value}), msg <> " Creating one."}
+			:ok -> Order.post_order(key, value, id)
+			{:error, "No order by that name."} -> {OrderSupervisor.start_child({id, key, value}), "No order exists. Creating one."}
+			{:error, "Order archived."} -> {"Order was filled and archived."}
 			end
 			{
 				:reply, 
@@ -50,22 +56,36 @@ defmodule Marketplace.Server do
 
 	def handle_call({:match, key, value, id}, _from, _state) do 
 
-		case lk(id) do 
-			:ok -> {:reply, Order.post_match(key, value, id), nil}
-			{:error, msg} -> {:reply, msg, nil}
+		resp = case lk(id) do 
+			:ok -> valid_match?({id, key, value})
+			{:error, msg} -> msg
+		 	end
+
+		case resp do 
+			true -> {:reply, Order.post_match(key, value, id), nil}
+			false -> {:reply, archive(id), nil}
+			msg -> {:reply, msg, nil}
 		end
 	end
 
-	defp lk(id), do: Registry.lookup(Marketplace.Registry, id) |> lookup(id)
+	defp lk(id), do: Registry.lookup(Marketplace.Registry, id) |> exists?(id)
 
 	#defp lk(id, key), do: Registry.lookup(Marketplace.Registry, id) |> lookup(id, key)
 	
-	defp lookup([{_pid, _} | _tail], _id), do: :ok
+	defp exists?([{pid, _} | _tail], id), do: :ok
 
-	defp lookup([], _id), do: {:error, "No order by that name."}
-	
-	def terminate(_reason, ids) do 
-		Marketplace.Stash.update(ids)
-	end
+	defp exists?([], _id), do: {:error, "No order by that name."}
+
+	def archive(id) do 
+		Order.terminate(id)
+		:ok = Agent.stop(Order.via_tuple(id), :normal)
+		return = "Order archived."
+		Logger.info(return)
+		{:ok, return}
+	end 
+
+	def valid_match?({id, key, value}) do 
+		Order.current_state(id, key) - value > 0
+	end 
 
 end 

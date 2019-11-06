@@ -1,5 +1,6 @@
 defmodule Marketplace.OrderSupervisor do 
 	use DynamicSupervisor
+	require Logger
 
 	@me OrderSupervisor
 
@@ -8,11 +9,12 @@ defmodule Marketplace.OrderSupervisor do
 	end 
 
 	def init(:no_args) do 
-		DynamicSupervisor.init(strategy: :one_for_one)
+		DynamicSupervisor.init(strategy: :one_for_one, restart: :temporary)
 	end 
 
-	def start_child({order_name, key, val}) do 
-		DynamicSupervisor.start_child(@me, {Marketplace.Order, {order_name, key, val}})
+	def start_child({id, key, val}) do 
+		DynamicSupervisor.start_child(@me, {Marketplace.Order, {id, key, val}})
+		Logger.info("Created new order.")
 	end 
 
 end
