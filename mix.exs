@@ -22,7 +22,8 @@ defmodule Marketplace.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-	 {:ex_syslogger, github: "slashmili/ex_syslogger", tag: "1.4.0"}
+	 {:ex_syslogger, github: "slashmili/ex_syslogger", tag: "1.4.0"},
+   {:poison, "~> 3.1"}
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
   end

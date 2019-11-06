@@ -24,7 +24,8 @@ config :logger, level: :info, backends: [{ExSyslogger, :logger_market}]
 config :logger, :logger_market,
   level: :info,
   format: "$date $time [$level] $levelpad$node $metadata $message",
-  metadata: [:module, :line, :function, :pid],
+  metadata: [:module, :line, :function],
+  formatter: ExSyslogger.JsonFormatter,
   ident: "Marketplace",
   facility: :local0,
   option: :pid
