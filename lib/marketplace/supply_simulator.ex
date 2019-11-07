@@ -7,14 +7,14 @@ defmodule Marketplace.SupplySimulator do
 
 	def get_and_match() do 
 		Marketplace.Book.list 
-			|> Enum.take(2)
+			|> Enum.take(:rand.uniform(5))
 			|> Enum.map(fn {x, _} -> x end)
 			|> Enum.map(fn x -> Marketplace.Book.match(x, :k1, :rand.uniform(30)) end)
 	end
 
 	def sleep(seconds) do 
 		receive do 
-			after seconds*1000 -> nil 
+			after seconds*100 -> nil 
 		end 
 	end 
 

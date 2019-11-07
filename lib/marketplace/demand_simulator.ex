@@ -14,7 +14,7 @@ defmodule Marketplace.DemandSimulator do
 
 	def sleep(seconds) do 
 		receive do 
-			after seconds*1000 -> nil 
+			after seconds*100 -> nil 
 		end 
 	end 
 
