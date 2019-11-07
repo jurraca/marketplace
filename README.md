@@ -1,6 +1,16 @@
 # Marketplace
 
-**TODO: Add description**
+The marketplace has several components: 
+- `Marketplace.Book`: the public API methods. 
+- `Marketplace.Server`: the internal GenServer implementation that validates and routes requests. 
+- `Marketplace.Order`: an Agent that holds state. Each agent is supervised by `OrderSupervisor`, a dynamic supervisor. 
+- `DemandSimulator` and `SupplySimulator` both generate a stream of supply and demand. (TODO: refine these interfaces). 
+- We leverage the `ExSyslogger` library for pushing logs via syslog. 
+
+# Usage 
+
+In the project directory, `iex -S mix`. 
+`{:ok, sup} = Marketplace.Supervisor.start_link([])` to start the Supervisor and associated children. 
 
 ## Installation
 
