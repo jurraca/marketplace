@@ -20,8 +20,7 @@ defmodule Marketplace.Supervisor do
        {Marketplace.OrderSupervisor, []},
        {Marketplace.Book, []}, 
        {Marketplace.Server, []},
-       {Marketplace.DemandSimulator, 20},
-       {Marketplace.SupplySimulator, []}
+       {Marketplace.DemandSimulator, 20}
 
     ]
 
