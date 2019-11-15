@@ -21,7 +21,6 @@ defmodule Marketplace.Supervisor do
        {Marketplace.Book, []}, 
        {Marketplace.Server, []},
        {Marketplace.DemandSimulator, 20}
-
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
