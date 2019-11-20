@@ -9,8 +9,7 @@ The marketplace has several components:
 
 # Usage 
 
-In the project directory, `iex -S mix`. 
-`{:ok, sup} = Marketplace.Supervisor.start_link([])` to start the Supervisor and associated children. 
+In the project directory, `iex -S mix` will start the application as `:marketplace`. You can manually launch the Demand & Supply simulators at your leisure.
 
 ## Installation
 
