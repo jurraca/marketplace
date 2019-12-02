@@ -8,9 +8,9 @@ defmodule Marketplace.SupplySimulator do
 	def get_and_match() do 
 		Marketplace.Book.list 
 			|> Enum.take(:rand.uniform(4))
-			|> Enum.map(fn {x, y} -> {x, Map.get(y, :k1) } end) 
-			|> Enum.map(fn {x, y} -> Marketplace.Book.match(x, :k1, y) end)	
-			|> Enum.count(fn x -> {:ok, "Order archived."} end)	
+			|> Enum.map(fn {name, state} -> {name, Map.get(state, :k1) } end) 
+			|> Enum.map(fn {name, value} -> Marketplace.Book.match(name, :k1, value) end)	
+			|> Enum.count(fn _x -> {:ok, "Order archived."} end)	
 	end
 
 	def sleep(seconds) do 
@@ -21,7 +21,10 @@ defmodule Marketplace.SupplySimulator do
 
 	def run do 
 
-		get_and_match()
+		case Marketplace.Book.list |> Enum.count > 100 do 
+			true -> get_and_match()
+			false -> sleep(10_000)
+		end 
 
 		sleep(:rand.uniform(4))
 

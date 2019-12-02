@@ -19,8 +19,8 @@ defmodule Marketplace.Supervisor do
        {Registry, [keys: :unique, name: Marketplace.Registry]},
        {Marketplace.OrderSupervisor, []},
        {Marketplace.Book, []}, 
-       {Marketplace.Server, []},
-       {Marketplace.DemandSimulator, 20}
+       {Marketplace.Server, []}
+       #{Marketplace.DemandSimulator, 20}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
