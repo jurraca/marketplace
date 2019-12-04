@@ -1,10 +1,21 @@
 defmodule Marketplace.DemandSimulator do 
 	use Task
 
+	@moduledoc """
+		
+		Long-running Task to simulate demand (i.e. post orders to the marketplace).  
+
+	"""
+
 	def start_link(arg) do
 		Task.start_link(__MODULE__, :run, [ arg ])
 	end
 
+
+	@doc """
+		Post an order of a given size every 100 ms. 
+		Order names are generated using a random number encoded to base 32. 
+	"""
 	def post(order_size) do 
 		Marketplace.Book.post(
 			String.to_atom("o" <> Integer.to_string(:rand.uniform(987982), 32) |> String.downcase()), 
@@ -18,6 +29,12 @@ defmodule Marketplace.DemandSimulator do
 			after seconds*100 -> nil 
 		end 
 	end 
+
+	@doc """
+	If the orderbook contains more than 30,000 orders, sleep for a while and let the `SupplySimulator` catch up. 
+	Else, post order with the given size `arg`. 
+
+	"""
 
 	def run(arg) do 
 

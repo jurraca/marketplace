@@ -24,7 +24,8 @@ defmodule Marketplace.MixProject do
   defp deps do
     [
 	 {:ex_syslogger, github: "slashmili/ex_syslogger", tag: "1.4.0"},
-   {:poison, "~> 3.1"}
+   {:poison, "~> 3.1"}, 
+   {:ex_doc, "~> 0.19.1"}
     ]
   end
 end

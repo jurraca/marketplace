@@ -1,6 +1,11 @@
 defmodule Marketplace.Book do
 	use GenServer 
 
+	@moduledoc """
+	GenServer exposing public endpoints for interacting with the marketplace "orderbook". 
+
+	"""
+
 	@name Marketplace.Server
 
 	# Public API 

@@ -2,6 +2,11 @@ defmodule Marketplace.Order do
 	use Agent, restart: :temporary
 	require Logger
 
+	@moduledoc """ 
+	Each order is a standalone agent under an `OrderSupervisor`. 
+	Handles get, post, update as well as Registry actions. 
+	"""
+
 	def start_link({name, key, val}) do 
 		Agent.start_link(fn -> %{key => val} end, name: via_tuple(name))
 	end

@@ -4,6 +4,10 @@ defmodule Marketplace.Server do
 
 	alias Marketplace.{Order, OrderSupervisor}
 
+	@moduledoc """
+		GenServer Callback module. This GenServer does not maintain state, only dispatches calls.
+	"""
+	@doc false 
 	def init(_) do
 		{:ok, nil}
 	end
@@ -11,6 +15,10 @@ defmodule Marketplace.Server do
 	def start_link(_) do
 		GenServer.start_link(__MODULE__, [])
 	end 
+
+	@doc """ 
+	Lists all orders in the marketplace, returns a list of `{order_name, state}`
+	"""
 
 	def handle_call(:list, _from, _state) do 
 		list = Registry.select( Marketplace.Registry, 
@@ -76,6 +84,9 @@ defmodule Marketplace.Server do
 
 	defp exists?([], _id), do: {:error, "No order by that name."}
 
+	@doc """
+	Terminate and stop `Order` agent, log archive message.
+	"""
 	def archive(id) do 
 		Order.terminate(id)
 		:ok = Agent.stop(Order.via_tuple(id), :normal)

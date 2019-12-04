@@ -1,10 +1,19 @@
 defmodule Marketplace.SupplySimulator do 
 	use Task
 
+	@moduledoc """ 
+		Long-running Task for matching orders in the marketplace. 
+	"""	
+
 	def start_link(_) do 
 		Task.start_link(__MODULE__, :run, [])
 	end 
 
+
+	@doc """
+	Reads the orderbook at `Marketplace.Book.list`, takes a random amount of orders in the list, and matches them fully.
+	Returns a count of successful matches.
+	"""
 	def get_and_match() do 
 		Marketplace.Book.list 
 			|> Enum.take(:rand.uniform(4))
@@ -18,6 +27,11 @@ defmodule Marketplace.SupplySimulator do
 			after seconds*100 -> nil 
 		end 
 	end 
+
+	@doc """
+	If the orderbook contains less than 100 orders, sleep, and let the `DemandSimulator` catch up. 
+	Else, run matching function `get_and_match/0`.
+	"""
 
 	def run do 
 
