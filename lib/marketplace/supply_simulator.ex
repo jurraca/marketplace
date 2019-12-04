@@ -23,7 +23,7 @@ defmodule Marketplace.SupplySimulator do
 
 		case Marketplace.Book.list |> Enum.count > 100 do 
 			true -> get_and_match()
-			false -> sleep(10_000)
+			false -> sleep(1_000)
 		end 
 
 		sleep(:rand.uniform(4))

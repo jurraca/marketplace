@@ -10,6 +10,7 @@ defmodule Marketplace.DemandSimulator do
 			String.to_atom("o" <> Integer.to_string(:rand.uniform(987982), 32) |> String.downcase()), 
 			:k1, 
 			order_size)  
+		sleep(:rand.uniform(1))
 	end
 
 	def sleep(seconds) do 
@@ -20,8 +21,10 @@ defmodule Marketplace.DemandSimulator do
 
 	def run(arg) do 
 
-		post(:rand.uniform(arg))
-		sleep(:rand.uniform(1))
+		case Marketplace.Book.list |> Enum.count > 30_000 do 
+			true -> sleep(100)
+			false -> post(:rand.uniform(arg))
+		end 
 
 		run(arg) 
 	end  
