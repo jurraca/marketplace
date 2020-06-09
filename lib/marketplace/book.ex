@@ -1,40 +1,38 @@
 defmodule Marketplace.Book do
-	use GenServer 
-
 	@moduledoc """
-	GenServer exposing public endpoints for interacting with the marketplace "orderbook". 
-
+	GenServer exposing public endpoints for interacting with the marketplace "orderbook".
 	"""
 
+	use GenServer
 	@name Marketplace.Server
 
-	# Public API 
-	def init(init_arg) do 
+	# Public API
+	def init(init_arg) do
 		{:ok, init_arg}
-	end 
-	
+	end
+
 	def start_link(_) do
 		GenServer.start_link(@name, [], name: @name)
 	end
 
-	def list do 
-		GenServer.call @name, :list 
+	def list do
+		GenServer.call @name, :list
 	end
 
-	def post(name, key, value) do 
+	def post(name, key, value) do
 		GenServer.call @name, {:post, key, value, name}
 	end
 
-	def match(name, key, value) do 
+	def match(name, key, value) do
 		GenServer.call @name, {:match, key, value, name}
-	end 
+	end
 
 	def get(name) do
 		GenServer.call @name, {:get, name}
 	end
 
-	def get(name, key) do 
+	def get(name, key) do
 		GenServer.call @name, {:get, name, key}
-	end 
+	end
 
 end
