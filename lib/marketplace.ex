@@ -10,8 +10,7 @@ defmodule Marketplace do
    
 
   ### Logging 
-  
+
   By default, the application issues log messages to syslog using `ex_syslogger`. Feel free to silence this as the volume of log messages can grow rapidly.  
   """
-
 end

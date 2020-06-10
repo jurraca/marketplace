@@ -14,7 +14,7 @@ defmodule Marketplace.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger], 
+      extra_applications: [:logger],
       included_applications: [:ex_syslogger],
       mod: {Marketplace.Application, []}
     ]
@@ -23,9 +23,9 @@ defmodule Marketplace.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-	 {:ex_syslogger, github: "slashmili/ex_syslogger", tag: "1.4.0"},
-   {:poison, "~> 3.1"}, 
-   {:ex_doc, "~> 0.19.1"}
+      {:ex_syslogger, github: "slashmili/ex_syslogger", tag: "1.4.0"},
+      {:poison, "~> 3.1"},
+      {:ex_doc, "~> 0.19.1"}
     ]
   end
 end
