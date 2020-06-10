@@ -1,5 +1,8 @@
 # Marketplace
 
+This is a set of toy modules for modeling marketplace dynamics in Elixir, mostly to teach myself GenServers and poke around OTP. 
+A benefit of looking at the world through Erlang/Elixir is that you can mimick the behavior of individual actors by mapping them to the fundamental computational unit of the BEAM: processes. So an OTP app is a sound choice for building highly concurrent platforms such as an online marketplace. 
+
 The marketplace has several components: 
 - `Marketplace.Book`: the public API methods. 
 - `Marketplace.Server`: the internal GenServer implementation that validates and routes requests. 
@@ -10,21 +13,3 @@ The marketplace has several components:
 # Usage 
 
 In the project directory, `iex -S mix` will start the application as `:marketplace`. You can manually launch the Demand & Supply simulators at your leisure.
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `marketplace` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:marketplace, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/marketplace](https://hexdocs.pm/marketplace).
-
